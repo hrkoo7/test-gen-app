@@ -34,8 +34,8 @@ exports.githubCallback = async (req, res, next) => {
     // Set cookie with lax sameSite and path so browser will send it after GitHub redirect
     res.cookie('token', jwtToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',      // <-- important for cross-site OAuth redirect
+      secure: process.env.NODE_ENV === 'production', // always true in production
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',      // <-- important for cross-site OAuth redirect
       path: '/',            // <-- ensure cookie is sent to all routes on your domain
       maxAge: 7 * 24 * 60 * 60 * 1000, // optional: 7 days
     });
